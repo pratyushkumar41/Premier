@@ -1,0 +1,46 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="com.premier.model.sale" table="sale">
+
+		<meta attribute="class-description">
+			The meta tag is used for describing your class
+		</meta>
+
+		<id name="si_number" 
+            type="int"
+            column="si_number">
+			<generator class="native" />
+		</id>
+		
+		<property name="sale_date" 
+            column="sale_date" 
+            type="timestamp" />
+            
+         <property name="in_product" 
+            column="in_product" 
+            type="double" />
+            
+        <property name="sale_product" 
+            column="sale_product" 
+            type="double" />
+            
+        <property name="van_in_quantity" 
+            column="van_in_quantity" 
+            type="double" />
+            
+        <property name="staff_attendance" 
+            column="staff_attendance" 
+            type="boolean" />
+            
+        <property name="additional_spend" 
+            column="additional_spend" 
+            type="double" />
+            
+         <property name="sack_sale" 
+            column="sack_sale" 
+            type="int" />
+		
+	</class>
+</hibernate-mapping>
