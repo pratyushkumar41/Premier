@@ -13,5 +13,14 @@
 		<action name="saleData" class="com.premier.action.MainAction" method="saleData">			
 			<result name="success" type="json"/>
 		</action>
+		
+		<action name="premierAddForm" class="com.premier.action.MainAction" method="premierAddForm">
+			<result name="success" type="json"/>
+		</action>
+		
+		<action name="premierEditForm" class="com.premier.action.MainAction" method="premierEditForm">
+			<result name="success" type="json"/>
+		</action>
+		
 	</package>
 </struts>

@@ -38,7 +38,302 @@ Ext.onReady(function() {
 		    }
 		});
 	console.log(store);
+	
+	var add = Ext.create('Ext.button.Button', {
+        text: 'Add',
+        handler: function() {
+            var wind_add = Ext.create('Ext.window.Window', {
+                title: 'Add Sale Details',
+                height: '88%',
+                width: '50%',
+                border: true,
+                buttonAlign: 'center',
+                items: [{
+                    xtype: 'combobox',
+                    labelWidth: '20%',
+                    width: '95%',
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Day Manager<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'day_manager_id',
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['abbr', 'name'],
+                        data: [{
+                            'abbr': 'USP',
+                            'name': 'USP'
+                        }, {
+                            'abbr': 'SKP',
+                            'name': 'SKP'
+                        }, {
+                            'abbr': 'SCP',
+                            'name': 'SCP'
+                        }, {
+                            'abbr': 'RP',
+                            'name': 'RP'
+                        }]
+                    }),
+                    valueField: 'abbr',
+                    displayField: 'name'
+                }, {
+                    xtype: 'datefield',
+                    labelWidth: '20%',
+                    width: '95%',
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Sale Date<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'sale_date_id'
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Purchase Quantity<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'purchase_quantity_id'
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Sale Quantity<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'sale_quantity_id'
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Van In Quantity<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'van_in_quantity_id'
+                }, {
+                    xtype: 'fieldcontainer',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    fieldLabel: 'Staff Attendance<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'staff_attendance_id',
+                    defaultType: 'radiofield',
+                    defaults: {
+                        flex: 1
+                    },
+                    layout: 'hbox',
+                    items: [{
+                        boxLabel: 'Present',
+                        inputValue: 1,
+                        id: 'radio1'
+                    }, {
+                        boxLabel: 'Absent',
+                        inputValue: 0,
+                        margin: '0px 0 0px 60px',
+                        id: 'radio2'
+                    }]
+                },{
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    fieldLabel: 'Additional Spend<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'additional_spend_id',
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    fieldLabel: 'Sack Sale<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'Sack_sale_id',
+                }],
 
+                buttons: [{
+                    xtype: 'button',
+                    align: 'center',
+                    text: 'Save',
+                    handler: function() {
+                        Ext.Ajax.request({
+                            url: 'premierAddForm',
+                            method: 'GET',
+                            params: {
+                            	day_manager_id: Ext.getCmp('day_manager_id').getValue(),
+                            	sale_date_id: Ext.getCmp('sale_date_id').getValue(),
+                            	purchase_quantity_id: Ext.getCmp('purchase_quantity_id').getValue(),
+                            	sale_quantity_id: Ext.getCmp('sale_quantity_id').getValue(),
+                            	van_in_quantity_id: Ext.getCmp('van_in_quantity_id').getValue(),
+                            	staff_attendance_id: Ext.getCmp('radio1').getValue(),
+                                additional_spend_id: Ext.getCmp('additional_spend_id').getValue(),
+                                Sack_sale_id: Ext.getCmp('Sack_sale_id').getValue(),
+                                add: 'add'
+                            },
+                        });
+                        grid.getView().refresh();
+                        store.reload();
+                        wind_add.hide();
+                    }
+                }, {
+                    xtype: 'button',
+                    align: 'center',
+                    text: 'Cancel',
+                    handler: function() {
+                        wind_add.close();
+                    }
+                }]
+            }).show();
+        }
+    });
+	
+	var edit = Ext.create('Ext.button.Button', {
+        text: 'Edit',
+        handler: function() {
+        	var premiergridvalue = Ext.getCmp('premiergrid').getSelectionModel().getSelection();
+            var wind_edit = Ext.create('Ext.window.Window', {
+                title: 'Add Sale Details',
+                height: '88%',
+                width: '50%',
+                border: true,
+                buttonAlign: 'center',
+                items: [{
+                    xtype: 'combobox',
+                    labelWidth: '20%',
+                    width: '95%',
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Day Manager<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'day_manager_id',
+                    value: 'USP',
+                    allowBlank: false,
+                    store: Ext.create('Ext.data.Store', {
+                        fields: ['abbr', 'name'],
+                        data: [{
+                            'abbr': 'USP',
+                            'name': 'USP'
+                        }, {
+                            'abbr': 'SKP',
+                            'name': 'SKP'
+                        }, {
+                            'abbr': 'SCP',
+                            'name': 'SCP'
+                        }, {
+                            'abbr': 'RP',
+                            'name': 'RP'
+                        }]
+                    }),
+                    valueField: 'abbr',
+                    displayField: 'name'
+                }, {
+                    xtype: 'datefield',
+                    labelWidth: '20%',
+                    value: premiergridvalue[0].data.sale_date,
+                    width: '95%',
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Sale Date<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'sale_date_id'
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    value: premiergridvalue[0].data.in_product,
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Purchase Quantity<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'purchase_quantity_id'
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    value: premiergridvalue[0].data.sale_product,
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Sale Quantity<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'sale_quantity_id'
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    value: premiergridvalue[0].data.van_in_quantity,
+                    margin: '10px 0 0px 10px',
+                    allowBlank: false,
+                    fieldLabel: 'Van In Quantity<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'van_in_quantity_id'
+                }, {
+                    xtype: 'fieldcontainer',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    value: premiergridvalue[0].data.staff_attendance,
+                    fieldLabel: 'Staff Attendance<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'staff_attendance_id',
+                    defaultType: 'radiofield',
+                    defaults: {
+                        flex: 1
+                    },
+                    layout: 'hbox',
+                    items: [{
+                        boxLabel: 'Present',
+                        inputValue: 1,
+                        id: 'radio1'
+                    }, {
+                        boxLabel: 'Absent',
+                        inputValue: 0,
+                        margin: '0px 0 0px 60px',
+                        id: 'radio2'
+                    }]
+                },{
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    value: premiergridvalue[0].data.additional_spend,
+                    fieldLabel: 'Additional Spend<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'additional_spend_id',
+                }, {
+                    xtype: 'numberfield',
+                    width: '95%',
+                    labelWidth: '20%',
+                    margin: '10px 0 0px 10px',
+                    value: premiergridvalue[0].data.sack_sale,
+                    fieldLabel: 'Sack Sale<span style="color: rgb(255, 0, 0); padding-left: 2px;">*</span>',
+                    id: 'sack_sale_id',
+                }],
+
+                buttons: [{
+                    xtype: 'button',
+                    align: 'center',
+                    text: 'Save',
+                    handler: function() {
+                        Ext.Ajax.request({
+                            url: 'premierEditForm',
+                            method: 'GET',
+                            params: {
+                            	si_number_id : premiergridvalue[0].data.si_number,
+                            	day_manager_id: Ext.getCmp('day_manager_id').getValue(),
+                            	sale_date_id: Ext.getCmp('sale_date_id').getValue(),
+                            	purchase_quantity_id: Ext.getCmp('purchase_quantity_id').getValue(),
+                            	sale_quantity_id: Ext.getCmp('sale_quantity_id').getValue(),
+                            	van_in_quantity_id: Ext.getCmp('van_in_quantity_id').getValue(),
+                            	staff_attendance_id: Ext.getCmp('radio1').getValue(),
+                                additional_spend_id: Ext.getCmp('additional_spend_id').getValue(),
+                                sack_sale_id: Ext.getCmp('sack_sale_id').getValue(),
+                                edit: 'edit'
+                            },
+                        });
+                        grid.getView().refresh();
+                        store.reload();
+                        wind_edit.hide();
+                    }
+                }, {
+                    xtype: 'button',
+                    align: 'center',
+                    text: 'Cancel',
+                    handler: function() {
+                        wind_add.close();
+                    }
+                }]
+            }).show();
+        }
+    });
+	
+	
 	 var grid= Ext.create('Ext.grid.Panel', {
 		store: store,
  	    dockedItems:[{
@@ -48,9 +343,10 @@ Ext.onReady(function() {
  				dock: 'top',
  	            displayMsg: '{0} - {1} of {2}',
  	            emptyMsg: "No topics to display",
+ 	           items:[add,edit]
          	}),
  		}],
- 		id :'invoicegrid',
+ 		id :'premiergrid',
  		selModel: {
  	        checkOnly: false,
  	        mode: 'SIMPLE'
@@ -68,6 +364,7 @@ Ext.onReady(function() {
  	    ]
  	});
 	 
+
 	var main = Ext.create('Ext.panel.Panel', {
 	    xtype: 'layout-border',
 	    requires: [
